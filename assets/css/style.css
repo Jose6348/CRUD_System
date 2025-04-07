@@ -1,0 +1,167 @@
+/* Variáveis */
+:root {
+    --sidebar-width: 250px;
+    --header-height: 60px;
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --info-color: #0dcaf0;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+}
+
+/* Layout */
+body {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+#sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: #ffffff;
+    border-right: 1px solid rgba(0,0,0,.1);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+#sidebar .nav-link {
+    color: var(--secondary-color);
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+#sidebar .nav-link:hover {
+    color: var(--primary-color);
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+#sidebar .nav-link.active {
+    color: var(--primary-color);
+    background-color: rgba(13, 110, 253, 0.1);
+    font-weight: 500;
+}
+
+#sidebar .nav-link i {
+    width: 24px;
+    margin-right: 0.5rem;
+}
+
+#main-content {
+    margin-left: var(--sidebar-width);
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+/* Cards */
+.card {
+    border: none;
+    transition: all 0.3s ease;
+
+    width: 100%;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card .card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+}
+
+/* Tabelas */
+.table th {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    color: var(--secondary-color);
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Botões */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+}
+
+.btn i {
+    font-size: 0.9em;
+}
+
+/* Formulários */
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-right: none;
+}
+
+.input-group .form-control {
+    border-left: none;
+}
+
+.input-group .form-control:focus {
+    border-color: #dee2e6;
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.8em;
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: calc(var(--sidebar-width) * -1);
+    }
+
+    #sidebar.active {
+        margin-left: 0;
+    }
+
+    #main-content {
+        margin-left: 0;
+    }
+
+    #main-content.active {
+        margin-left: var(--sidebar-width);
+    }
+} 
