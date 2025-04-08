@@ -28,8 +28,22 @@ class Historico_cargo_model extends CI_Model {
     }
 
     public function delete($id) {
+        $this->db->trans_start();
+        
+        // Primeiro verifica se o registro existe
+        $historico = $this->get_by_id($id);
+        if (!$historico) {
+            $this->db->trans_rollback();
+            return false;
+        }
+
+        // Tenta excluir o registro
         $this->db->where('id', $id);
-        return $this->db->delete('historico_cargos');
+        $result = $this->db->delete('historico_cargos');
+
+        $this->db->trans_complete();
+        
+        return $this->db->trans_status() && $result;
     }
 
     public function get_by_pessoa($pessoa_id) {
