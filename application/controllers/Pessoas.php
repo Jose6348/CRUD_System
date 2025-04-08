@@ -9,6 +9,7 @@ class Pessoas extends CI_Controller {
         $this->load->library(['session', 'pagination', 'form_validation']);
         $this->load->model('Pessoa_model');
         $this->load->model('Cargo_model');
+        $this->load->model('Historico_cargo_model');
     }
 
     public function index($offset = 0) {
@@ -133,23 +134,32 @@ class Pessoas extends CI_Controller {
     public function delete_historico($id) {
         if (!$id) {
             $this->session->set_flashdata('error', 'ID do histórico não fornecido.');
-            redirect('pessoas/edit/' . $this->input->post('pessoa_id'));
+            redirect('pessoas');
             return;
         }
 
-        $historico = $this->db->get_where('historico_cargos', ['id' => $id])->row();
+        $historico = $this->Historico_cargo_model->get_by_id($id);
         if (!$historico) {
             $this->session->set_flashdata('error', 'Registro de histórico não encontrado.');
-            redirect('pessoas/edit/' . $this->input->post('pessoa_id'));
+            redirect('pessoas');
             return;
         }
 
         $pessoa_id = $historico->pessoa_id;
 
-        if ($this->db->delete('historico_cargos', ['id' => $id])) {
-            $this->session->set_flashdata('success', 'Cargo removido do histórico com sucesso.');
-        } else {
+        // Inicia a transação
+        $this->db->trans_start();
+
+        // Tenta excluir o histórico
+        $deleted = $this->Historico_cargo_model->delete($id);
+
+        // Completa a transação
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === FALSE) {
             $this->session->set_flashdata('error', 'Erro ao remover cargo do histórico.');
+        } else {
+            $this->session->set_flashdata('success', 'Cargo removido do histórico com sucesso.');
         }
 
         redirect('pessoas/edit/' . $pessoa_id);
