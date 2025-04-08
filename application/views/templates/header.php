@@ -84,7 +84,7 @@
         .card-body {
             flex: 1;
             overflow-y: auto;
-            padding: 0;
+            padding: 1rem;
         }
 
         .table-responsive {
@@ -110,9 +110,33 @@
             vertical-align: middle;
         }
 
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1001;
+            background-color: #343a40;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+        }
+
+        /* Estilos Mobile - Não afetam o Desktop */
         @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
             .sidebar {
                 transform: translateX(-100%);
+                width: 100%;
+                max-width: 300px;
             }
             
             .sidebar.show {
@@ -122,11 +146,70 @@
             .main-content {
                 margin-left: 0;
                 width: 100%;
+                padding: 0.5rem;
+            }
+
+            .card {
+                height: auto;
+                margin-bottom: 1rem;
+            }
+
+            .card-body {
+                padding: 0.5rem;
+            }
+
+            .table td, .table th {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                padding: 0.375rem 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .form-control {
+                font-size: 0.9rem;
+            }
+
+            .alert {
+                margin: 0.5rem;
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .table-responsive {
+                height: auto;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .table-responsive {
+                margin: 0 -0.5rem;
+            }
+
+            .card-header {
+                padding: 0.75rem;
+            }
+
+            .btn-group {
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+
+            .pagination {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.25rem;
             }
         }
     </style>
 </head>
 <body>
+    <button class="mobile-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
     <div class="wrapper">
         <nav class="sidebar">
             <div class="p-3">
@@ -151,7 +234,8 @@
             </div>
         </nav>
 
-        <div >
+        <div class="main-content">
+            <div class="content-wrapper">
                 <?php if ($this->session->flashdata('success')): ?>
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <i class="fas fa-check-circle me-2"></i>
@@ -167,9 +251,34 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php endif; ?>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('show');
+        }
+
+        // Fechar sidebar ao clicar em um link (mobile)
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.sidebar').classList.remove('show');
+                }
+            });
+        });
+
+        // Fechar sidebar ao clicar fora (mobile)
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && 
+                !e.target.closest('.sidebar') && 
+                !e.target.closest('.mobile-toggle') &&
+                document.querySelector('.sidebar').classList.contains('show')) {
+                document.querySelector('.sidebar').classList.remove('show');
+            }
+        });
+    </script>
 </body>
 </html> 

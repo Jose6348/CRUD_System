@@ -40,9 +40,9 @@
                                       name="descricao" 
                                       rows="3" 
                                       required 
-                                      minlength="10"><?php echo set_value('descricao'); ?></textarea>
+                                      minlength="3"><?php echo set_value('descricao'); ?></textarea>
                             <div class="invalid-feedback">
-                                <?php echo form_error('descricao') ? form_error('descricao') : 'Por favor, informe a descrição do cargo (mínimo 10 caracteres).'; ?>
+                                <?php echo form_error('descricao') ? form_error('descricao') : 'Por favor, informe a descrição do cargo (mínimo 3 caracteres).'; ?>
                             </div>
                         </div>
 

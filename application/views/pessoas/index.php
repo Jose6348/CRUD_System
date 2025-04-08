@@ -34,8 +34,8 @@
                             <thead>
                                 <tr>
                                     <th>Nome</th>
-                                    <th>Email</th>
-                                    <th>Telefone</th>
+                                    <th class="d-md-table-cell d-none">Email</th>
+                                    <th class="d-md-table-cell d-none">Telefone</th>
                                     <th>Cargo Atual</th>
                                     <th class="text-center">Ações</th>
                                 </tr>
@@ -48,13 +48,28 @@
                                 <?php else: ?>
                                     <?php foreach ($pessoas as $pessoa): ?>
                                         <tr>
-                                            <td><?php echo htmlspecialchars($pessoa->nome); ?></td>
                                             <td>
-                                                <a href="mailto:<?php echo htmlspecialchars($pessoa->email); ?>" class="text-decoration-none">
-                                                    <?php echo htmlspecialchars($pessoa->email); ?>
-                                                </a>
+                                                <?php echo htmlspecialchars($pessoa->nome); ?>
+                                                <!-- Informações extras apenas no mobile -->
+                                                <div class="d-md-none small text-muted">
+                                                    <?php if ($pessoa->email): ?>
+                                                        <a href="mailto:<?php echo htmlspecialchars($pessoa->email); ?>" class="text-decoration-none">
+                                                            <?php echo htmlspecialchars($pessoa->email); ?>
+                                                        </a>
+                                                    <?php endif; ?>
+                                                    <?php if ($pessoa->telefone): ?>
+                                                        <br><?php echo htmlspecialchars($pessoa->telefone); ?>
+                                                    <?php endif; ?>
+                                                </div>
                                             </td>
-                                            <td><?php echo htmlspecialchars($pessoa->telefone); ?></td>
+                                            <td class="d-md-table-cell d-none">
+                                                <?php if ($pessoa->email): ?>
+                                                    <a href="mailto:<?php echo htmlspecialchars($pessoa->email); ?>" class="text-decoration-none">
+                                                        <?php echo htmlspecialchars($pessoa->email); ?>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="d-md-table-cell d-none"><?php echo htmlspecialchars($pessoa->telefone); ?></td>
                                             <td>
                                                 <?php if (!empty($pessoa->cargo_atual)): ?>
                                                     <span class="badge bg-info">
