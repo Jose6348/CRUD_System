@@ -66,13 +66,19 @@ class Cargo_model extends CI_Model {
      * @return bool True on success, false on failure
      */
     public function delete($id) {
+        $this->db->trans_start();
+        
         // First delete all historical records for this cargo
         $this->db->where('cargo_id', $id);
         $this->db->delete('historico_cargos');
         
         // Then delete the cargo
         $this->db->where('id', $id);
-        return $this->db->delete('cargos');
+        $this->db->delete('cargos');
+
+        $this->db->trans_complete();
+        
+        return $this->db->trans_status();
     }
 
     /**
